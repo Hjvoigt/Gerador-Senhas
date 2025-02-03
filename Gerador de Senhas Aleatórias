@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gerador de Senhas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #282c34;
+            color: white;
+            margin: 50px;
+        }
+        .container {
+            max-width: 400px;
+            margin: auto;
+            padding: 20px;
+            background: #444;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        }
+        input, button, select {
+            margin: 10px;
+            padding: 10px;
+            width: 80%;
+            border-radius: 5px;
+            border: none;
+        }
+        button {
+            background: blue;
+            color: white;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Gerador de Senhas</h1>
+        <label for="name">Nome:</label>
+        <input type="text" id="name" placeholder="Digite seu nome">
+        <br>
+        <label for="cpf">CPF:</label>
+        <input type="text" id="cpf" placeholder="Digite seu CPF" maxlength="11">
+        <br>
+        <label for="dob">Data de Nascimento:</label>
+        <input type="date" id="dob">
+        <br>
+        <label for="phone">Telefone:</label>
+        <input type="text" id="phone" placeholder="Digite seu telefone" maxlength="11">
+        <br>
+        <label for="length">Tamanho da senha:</label>
+        <select id="length">
+            <option value="4">4 caracteres</option>
+            <option value="6">6 caracteres</option>
+            <option value="8" selected>8 caracteres</option>
+        </select>
+        <br>
+        <button onclick="generatePassword()">Gerar Senhas</button>
+        <br>
+        <div id="passwords"></div>
+    </div>
+    
+    <script>
+        function generatePassword() {
+            const name = document.getElementById('name').value;
+            const cpf = document.getElementById('cpf').value;
+            const dob = document.getElementById('dob').value.replace(/-/g, "");
+            const phone = document.getElementById('phone').value;
+            const length = parseInt(document.getElementById('length').value);
+            
+            if (!name || !cpf || !dob || !phone) {
+                alert("Preencha todos os campos!");
+                return;
+            }
+            
+            const namePart = name.slice(0, 3).toLowerCase();
+            const cpfPart = cpf.slice(-4);
+            const dobPart = dob.slice(-4);
+            const phonePart = phone.slice(-4);
+            
+            let passwords = "";
+            for (let i = 0; i < 5; i++) {
+                let password = `${namePart}${cpfPart}${dobPart}${phonePart}`;
+                password = password.split('').sort(() => Math.random() - 0.5).join('').slice(0, length);
+                passwords += `<p>${password}</p>`;
+            }
+            
+            document.getElementById('passwords').innerHTML = passwords;
+        }
+    </script>
+</body>
+</html>
